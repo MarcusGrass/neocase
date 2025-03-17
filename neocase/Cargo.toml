@@ -1,0 +1,16 @@
+[package]
+name = "neocase"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+neocase-core = { workspace = true }
+
+anyhow = { workspace = true }
+nvim-oxi = { workspace = true }
+
+[lints]
+workspace = true
