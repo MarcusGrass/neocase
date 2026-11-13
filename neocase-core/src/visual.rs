@@ -1,9 +1,5 @@
 use anyhow::{Context, Result};
-use nvim_oxi::{
-    Array,
-    api::{Window, types::Mode},
-    conversion::FromObject,
-};
+use nvim_oxi::{Array, api::Window, conversion::FromObject};
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub(crate) struct VisualPos {
     start_row: usize,
@@ -83,10 +79,8 @@ impl VisualPos {
     }
 
     pub(crate) fn get() -> Result<Option<Self>> {
-        let mode = nvim_oxi::api::get_mode()
-            .context("failed to get mode")?
-            .mode;
-        if !matches!(mode, Mode::Visual | Mode::VisualSelect) {
+        let mode = nvim_oxi::api::get_mode().mode;
+        if !mode.is_visual_by_character() {
             return Ok(None);
         }
         let start: Array = nvim_oxi::api::call_function("getpos", ("v",))

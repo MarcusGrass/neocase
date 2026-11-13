@@ -9,7 +9,7 @@ neocase-core = { path = "./neocase-core/" }
 # External
 anyhow = "1.0.96"
 convert_case = "0.8.0"
-nvim-oxi = { version = "0.5.1", features = ["neovim-0-10"] }
+nvim-oxi = { version = "0.6.0", features = ["neovim-0-12"] }
 rustc-hash = "2.1.1"
 
 [workspace.lints.clippy]
@@ -20,7 +20,4 @@ similar_names = "allow"
 
 
 [patch.crates-io]
-nvim-oxi = { git = "https://github.com/MarcusGrass/nvim-oxi", rev = "4b227faa4c089843169f7362e0541983010691ae"}
-nvim-oxi-types = { git = "https://github.com/MarcusGrass/nvim-oxi", rev = "4b227faa4c089843169f7362e0541983010691ae"}
-nvim-oxi-api = { git = "https://github.com/MarcusGrass/nvim-oxi", rev = "4b227faa4c089843169f7362e0541983010691ae"}
-nvim-oxi-macros = { git = "https://github.com/MarcusGrass/nvim-oxi", rev = "4b227faa4c089843169f7362e0541983010691ae"}
+nvim-oxi = { git = "https://github.com/noib3/nvim-oxi", rev = "d411003cbe660cd32014806b2d1a04651b7d06e0" }

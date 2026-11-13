@@ -1,10 +1,11 @@
 use std::sync::Mutex;
 
-use nvim_oxi::{Dictionary, Object, api::opts::OptionOptsBuilder};
+use nvim_oxi::{Object, api::opts::OptionOptsBuilder};
 use opts::{SwitchOpts, get_global};
 mod buf;
 mod casing;
 mod cycle;
+mod notify;
 mod opts;
 mod ring;
 mod switch;
@@ -12,11 +13,7 @@ mod visual;
 
 pub fn setup(opts: Option<Object>) {
     if let Err(e) = opts::setup(opts) {
-        let _ = nvim_oxi::api::notify(
-            &format!("[neocase]: Failed to setup -> {e:#?}"),
-            nvim_oxi::api::types::LogLevel::Error,
-            &Dictionary::new(),
-        );
+        notify::notify_error(&format!("[neocase]: Failed to setup -> {e:#?}"));
     }
 }
 
@@ -29,19 +26,11 @@ pub fn switch(opts: Option<Object>) {
     match so {
         Ok(opts) => {
             if let Err(e) = switch::switch(opts) {
-                let _ = nvim_oxi::api::notify(
-                    &format!("[neocase]: Failed to switch case -> {e:#?}"),
-                    nvim_oxi::api::types::LogLevel::Error,
-                    &Dictionary::new(),
-                );
+                notify::notify_error(&format!("[neocase]: Failed to switch case -> {e:#?}"));
             }
         }
         Err(e) => {
-            let _ = nvim_oxi::api::notify(
-                &format!("[neocase]: Invalid options -> {e:#?}"),
-                nvim_oxi::api::types::LogLevel::Error,
-                &Dictionary::new(),
-            );
+            notify::notify_error(&format!("[neocase]: Invalid options -> {e:#?}"));
         }
     }
 }
@@ -66,11 +55,7 @@ pub fn switch_dr(opts: Option<Object>) -> Option<String> {
             return Some("g@l".to_string());
         }
         Err(e) => {
-            let _ = nvim_oxi::api::notify(
-                &format!("[neocase]: Invalid options -> {e:#?}"),
-                nvim_oxi::api::types::LogLevel::Error,
-                &Dictionary::new(),
-            );
+            notify::notify_error(&format!("[neocase]: Invalid options -> {e:#?}"));
         }
     }
     None
@@ -83,11 +68,7 @@ pub fn switch_dr_exec(_opts: Option<Object>) {
     let mut guard = OPERATOR_FUNC_ARGS.lock().unwrap();
     if let Some(opts) = *guard {
         if let Err(e) = switch::switch(opts) {
-            let _ = nvim_oxi::api::notify(
-                &format!("[neocase]: Failed to switch case -> {e:#?}"),
-                nvim_oxi::api::types::LogLevel::Error,
-                &Dictionary::new(),
-            );
+            notify::notify_error(&format!("[neocase]: Failed to switch case -> {e:#?}"));
             *guard = None;
         }
     }
@@ -95,10 +76,6 @@ pub fn switch_dr_exec(_opts: Option<Object>) {
 
 pub fn cycle(opts: Option<Object>) {
     if let Err(e) = crate::cycle::cycle(opts) {
-        let _ = nvim_oxi::api::notify(
-            &format!("[neocase]: Failed to cycle case -> {e:#?}"),
-            nvim_oxi::api::types::LogLevel::Error,
-            &Dictionary::new(),
-        );
+        notify::notify_error(&format!("[neocase]: Failed to cycle case -> {e:#?}"));
     }
 }

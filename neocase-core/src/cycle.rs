@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::Context;
 use convert_case::Case;
-use nvim_oxi::Object;
+use nvim_oxi::{Object, api::opts::OptionOpts};
 use rustc_hash::{FxBuildHasher, FxHashMap, FxHasher};
 
 use crate::{opts::CycleVec, ring::NonemptyRing, switch::switch_to_case, visual::VisualPos};
@@ -25,8 +25,8 @@ pub(crate) fn cycle(opts: Option<Object>) -> anyhow::Result<()> {
     let mut buf = win
         .get_buf()
         .context("failed to get buffer for current window")?;
-    let ft: String = buf
-        .get_option("filetype")
+    let opts = OptionOpts::builder().buf(buf.clone()).build();
+    let ft: String = nvim_oxi::api::get_option_value("filetype", &opts)
         .context("failed to get buffer filetype")?;
     let cursor_pos = win.get_cursor().context("failed to get cursor_pos")?;
 
